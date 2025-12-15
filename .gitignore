@@ -1,0 +1,39 @@
+# .gitignore for AUTOSAR Learning Environment
+
+# ビルド出力
+build/
+*.exe
+*.out
+*.o
+*.obj
+
+# CMake関連
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# IDE設定
+.vscode/
+.vs/
+.idea/
+*.user
+*.suo
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
+# OS生成ファイル
+.DS_Store
+Thumbs.db
+*~
+
+# ログファイル
+*.log
+
+# 一時ファイル
+*.tmp
+*.bak
+*.swp
