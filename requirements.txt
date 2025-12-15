@@ -1,0 +1,2 @@
+# Python requirements for AUTOSAR GUI Simulator
+matplotlib>=3.5.0
