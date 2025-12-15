@@ -2,7 +2,7 @@
  * @file Os.h
  * @brief AUTOSAR OS Interface
  * 
- * 簡易的なOSタスクスケジューラの実装
+ * Simple OS task scheduler implementation
  */
 
 #ifndef OS_H
@@ -10,25 +10,25 @@
 
 #include "Std_Types.h"
 
-/* タスクID定義 */
+/* Task ID definition */
 typedef uint8_t TaskType;
 
-/* タスク状態 */
+/* Task state */
 typedef enum {
     TASK_STATE_SUSPENDED,
     TASK_STATE_READY,
     TASK_STATE_RUNNING
 } TaskStateType;
 
-/* タスク関数ポインタ型 */
+/* Task function pointer type */
 typedef void (*TaskFuncType)(void);
 
-/* タスク設定構造体 */
+/* Task configuration structure */
 typedef struct {
     TaskType taskId;
     TaskFuncType taskFunc;
-    uint32_t period_ms;      /* タスク周期[ms] */
-    uint32_t lastExecution;  /* 最終実行時刻 */
+    uint32_t period_ms;      /* Task period [ms] */
+    uint32_t lastExecution;  /* Last execution time */
     TaskStateType state;
 } TaskConfigType;
 

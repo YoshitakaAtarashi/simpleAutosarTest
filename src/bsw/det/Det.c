@@ -9,7 +9,7 @@
 static uint32_t errorCount = 0;
 
 /**
- * @brief DET初期化
+ * @brief DET initialization
  */
 void Det_Init(void) {
     errorCount = 0;
@@ -17,7 +17,7 @@ void Det_Init(void) {
 }
 
 /**
- * @brief エラーレポート
+ * @brief Report error
  */
 Std_ReturnType Det_ReportError(uint16_t moduleId, uint8_t instanceId, 
                                 uint8_t apiId, uint8_t errorId) {

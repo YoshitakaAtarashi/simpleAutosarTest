@@ -12,14 +12,14 @@
 static EcuM_StateType currentState = ECUM_STATE_OFF;
 
 /**
- * @brief EcuM初期化
+ * @brief EcuM initialization
  */
 void EcuM_Init(void) {
     printf("[ECUM] ECU State Manager Initializing...\n");
     
     currentState = ECUM_STATE_STARTUP;
     
-    /* BSWモジュール初期化 */
+    /* Initialize BSW modules */
     Det_Init();
     Com_Init();
     Os_Init();
@@ -28,33 +28,33 @@ void EcuM_Init(void) {
 }
 
 /**
- * @brief スタートアップフェーズ2
+ * @brief Startup Phase 2
  */
 void EcuM_StartupTwo(void) {
     printf("[ECUM] Startup Phase 2\n");
     
-    /* RTE初期化などを実行 */
+    /* Execute RTE initialization etc. */
     
     currentState = ECUM_STATE_RUN;
     printf("[ECUM] State: RUN\n");
 }
 
 /**
- * @brief ECUシャットダウン
+ * @brief ECU shutdown
  */
 void EcuM_Shutdown(void) {
     printf("[ECUM] Shutting down...\n");
     
     currentState = ECUM_STATE_SHUTDOWN;
     
-    /* 各モジュールのデ初期化処理 */
+    /* De-initialization of each module */
     
     currentState = ECUM_STATE_OFF;
     printf("[ECUM] State: OFF\n");
 }
 
 /**
- * @brief ECU状態取得
+ * @brief Get ECU state
  */
 EcuM_StateType EcuM_GetState(void) {
     return currentState;

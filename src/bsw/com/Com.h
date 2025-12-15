@@ -2,7 +2,7 @@
  * @file Com.h
  * @brief AUTOSAR Communication Module
  * 
- * コンポーネント間通信のシグナルベース実装
+ * Signal-based implementation for inter-component communication
  */
 
 #ifndef COM_H
@@ -10,13 +10,13 @@
 
 #include "Std_Types.h"
 
-/* シグナルID型 */
+/* Signal ID type */
 typedef uint16_t Com_SignalIdType;
 
-/* シグナルデータ型 */
+/* Signal data type */
 typedef uint32_t Com_SignalDataType;
 
-/* 最大シグナル数 */
+/* Maximum number of signals */
 #define COM_MAX_SIGNALS 50
 
 /* COM API */

@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-/* シグナルバッファ */
+/* Signal buffer */
 typedef struct {
     Com_SignalIdType signalId;
     Com_SignalDataType data;
@@ -17,7 +17,7 @@ typedef struct {
 static Com_SignalBufferType signalBuffer[COM_MAX_SIGNALS];
 
 /**
- * @brief COM初期化
+ * @brief COM initialization
  */
 void Com_Init(void) {
     memset(signalBuffer, 0, sizeof(signalBuffer));
@@ -30,7 +30,7 @@ void Com_Init(void) {
 }
 
 /**
- * @brief シグナル送信
+ * @brief Send signal
  */
 Std_ReturnType Com_SendSignal(Com_SignalIdType signalId, Com_SignalDataType signalData) {
     if (signalId >= COM_MAX_SIGNALS) {
@@ -45,7 +45,7 @@ Std_ReturnType Com_SendSignal(Com_SignalIdType signalId, Com_SignalDataType sign
 }
 
 /**
- * @brief シグナル受信
+ * @brief Receive signal
  */
 Std_ReturnType Com_ReceiveSignal(Com_SignalIdType signalId, Com_SignalDataType* signalData) {
     if (signalId >= COM_MAX_SIGNALS || signalData == NULL) {

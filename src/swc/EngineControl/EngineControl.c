@@ -2,7 +2,7 @@
  * @file EngineControl.c
  * @brief Engine Control Software Component Implementation
  * 
- * センサー値を基にエンジン制御を行うSWC
+ * SWC that performs engine control based on sensor values
  */
 
 #include "EngineControl.h"
@@ -13,16 +13,16 @@ static uint32_t cycleCount = 0;
 static uint32_t currentEngineSpeed = 0;
 
 /**
- * @brief EngineControl初期化
+ * @brief EngineControl initialization
  */
 void EngineControl_Init(void) {
     cycleCount = 0;
-    currentEngineSpeed = 800;  /* アイドル回転数 */
+    currentEngineSpeed = 800;  /* Idle RPM */
     printf("[SWC-EngineControl] Initialized (Idle RPM: %u)\n", currentEngineSpeed);
 }
 
 /**
- * @brief EngineControl実行（20ms周期）
+ * @brief EngineControl execution (20ms cycle)
  */
 void EngineControl_Run(void) {
     cycleCount++;
@@ -30,30 +30,30 @@ void EngineControl_Run(void) {
     uint32_t sensorValue = 0;
     uint32_t targetSpeed = 0;
     
-    /* RTEからセンサー値を読み取り */
+    /* Read sensor value from RTE */
     Std_ReturnType result = Rte_Read_SensorValue(&sensorValue);
     
     if (result == E_OK) {
-        /* センサー値に基づいてエンジン回転数を計算 */
-        /* 簡易的な制御ロジック: センサー値 * 20 */
+        /* Calculate engine speed based on sensor value */
+        /* Simple control logic: sensor value * 20 */
         targetSpeed = sensorValue * 20;
         
-        /* 現在値から目標値へスムーズに変化 */
+        /* Smoothly change from current value to target value */
         if (currentEngineSpeed < targetSpeed) {
             currentEngineSpeed += 10;
         } else if (currentEngineSpeed > targetSpeed) {
             currentEngineSpeed -= 10;
         }
         
-        /* エンジン回転数をRTEに書き込み */
+        /* Write engine speed to RTE */
         Rte_Write_EngineSpeed(currentEngineSpeed);
         
-        if (cycleCount % 50 == 0) {  /* 1秒ごとに表示 */
+        if (cycleCount % 50 == 0) {  /* Display every 1 second */
             printf("[SWC-EngineControl] Sensor: %u, Engine RPM: %u -> %u (cycle: %u)\n",
                    sensorValue, currentEngineSpeed, targetSpeed, cycleCount);
         }
     } else {
-        /* センサー値が取得できない場合はアイドル回転数を維持 */
+        /* Maintain idle speed if sensor value cannot be obtained */
         currentEngineSpeed = 800;
     }
 }

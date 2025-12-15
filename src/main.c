@@ -2,7 +2,7 @@
  * @file main.c
  * @brief AUTOSAR Simulation Main Entry Point
  * 
- * ECUシミュレーションのメインプログラム
+ * Main program for ECU simulation
  */
 
 #include <stdio.h>
@@ -20,42 +20,42 @@
 #include "swc/SensorReader/SensorReader.h"
 #include "swc/EngineControl/EngineControl.h"
 
-/* タスクID定義 */
+/* Task ID definitions */
 #define TASK_SENSOR_READER      0
 #define TASK_ENGINE_CONTROL     1
 #define TASK_DIAGNOSTIC         2
 
-/* 外部関数宣言 */
+/* External function declarations */
 extern Std_ReturnType Os_RegisterTask(TaskType taskId, TaskFuncType taskFunc, uint32_t period_ms);
 
 /**
- * @brief タスク1: SensorReader（10ms周期）
+ * @brief Task 1: SensorReader (10ms cycle)
  */
 void Task_SensorReader(void) {
     SensorReader_Run();
 }
 
 /**
- * @brief タスク2: EngineControl（20ms周期）
+ * @brief Task 2: EngineControl (20ms cycle)
  */
 void Task_EngineControl(void) {
     EngineControl_Run();
 }
 
 /**
- * @brief タスク3: 診断タスク（100ms周期）
+ * @brief Task 3: Diagnostic task (100ms cycle)
  */
 void Task_Diagnostic(void) {
     static uint32_t diagCount = 0;
     diagCount++;
     
-    if (diagCount % 10 == 0) {  /* 1秒ごと */
+    if (diagCount % 10 == 0) {  /* Every 1 second */
         printf("[DIAG] System running normally (cycle: %u)\n", diagCount);
     }
 }
 
 /**
- * @brief メイン関数
+ * @brief Main function
  */
 int main(void) {
     printf("========================================\n");
@@ -63,19 +63,19 @@ int main(void) {
     printf("  Simple ECU Simulation\n");
     printf("========================================\n\n");
     
-    /* 乱数初期化 */
+    /* Initialize random number generator */
     srand((unsigned int)time(NULL));
     
-    /* ======== STARTUP フェーズ ======== */
+    /* ======== STARTUP phase ======== */
     printf("=== STARTUP PHASE ===\n");
     
-    /* EcuMによるBSW初期化 */
+    /* Initialize BSW via EcuM */
     EcuM_Init();
     
-    /* RTE初期化 */
+    /* Initialize RTE */
     Rte_Init();
     
-    /* SWC初期化 */
+    /* Initialize SWC */
     SensorReader_Init();
     EngineControl_Init();
     
@@ -84,7 +84,7 @@ int main(void) {
     
     printf("\n=== TASK REGISTRATION ===\n");
     
-    /* タスク登録 */
+    /* Register tasks */
     Os_RegisterTask(TASK_SENSOR_READER, Task_SensorReader, 10);    /* 10ms */
     Os_RegisterTask(TASK_ENGINE_CONTROL, Task_EngineControl, 20);  /* 20ms */
     Os_RegisterTask(TASK_DIAGNOSTIC, Task_Diagnostic, 100);        /* 100ms */
@@ -92,11 +92,11 @@ int main(void) {
     printf("\n=== RUN PHASE ===\n");
     printf("Simulation will run for 10 seconds...\n\n");
     
-    /* ======== RUN フェーズ ======== */
-    /* OSスケジューラ起動（ブロッキング） */
+    /* ======== RUN phase ======== */
+    /* Start OS scheduler (blocking) */
     Os_Start();
     
-    /* ======== SHUTDOWN フェーズ ======== */
+    /* ======== SHUTDOWN phase ======== */
     printf("\n=== SHUTDOWN PHASE ===\n");
     EcuM_Shutdown();
     

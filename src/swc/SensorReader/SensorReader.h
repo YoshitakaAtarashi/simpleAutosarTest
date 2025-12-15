@@ -2,7 +2,7 @@
  * @file SensorReader.h
  * @brief Sensor Reader Software Component
  * 
- * センサーデータを読み取り、RTEを通じて他のSWCに提供
+ * Reads sensor data and provides it to other SWCs via RTE
  */
 
 #ifndef SENSOR_READER_H
@@ -10,10 +10,10 @@
 
 #include "Std_Types.h"
 
-/* SWC初期化 */
+/* SWC initialization */
 void SensorReader_Init(void);
 
-/* Runnable - 周期的に呼ばれる */
+/* Runnable - called periodically */
 void SensorReader_Run(void);
 
 #endif /* SENSOR_READER_H */

@@ -2,7 +2,7 @@
  * @file Os.c
  * @brief AUTOSAR OS Implementation
  * 
- * 簡易的なタスクスケジューラの実装
+ * Simple task scheduler implementation
  */
 
 #include "Os.h"
@@ -15,19 +15,19 @@
 #include <unistd.h>
 #endif
 
-/* 最大タスク数 */
+/* Maximum number of tasks */
 #define OS_MAX_TASKS 10
 
-/* タスク管理テーブル */
+/* Task management table */
 static TaskConfigType taskTable[OS_MAX_TASKS];
 static uint8_t taskCount = 0;
 static volatile bool osRunning = false;
 
-/* システムティックカウンタ（ミリ秒） */
+/* System tick counter (milliseconds) */
 static uint32_t systemTick = 0;
 
 /**
- * @brief OS初期化
+ * @brief OS initialization
  */
 void Os_Init(void) {
     taskCount = 0;
@@ -42,7 +42,7 @@ void Os_Init(void) {
 }
 
 /**
- * @brief タスクをシステムに登録
+ * @brief Register task to system
  */
 Std_ReturnType Os_RegisterTask(TaskType taskId, TaskFuncType taskFunc, uint32_t period_ms) {
     if (taskCount >= OS_MAX_TASKS) {
@@ -63,7 +63,7 @@ Std_ReturnType Os_RegisterTask(TaskType taskId, TaskFuncType taskFunc, uint32_t 
 }
 
 /**
- * @brief タスクアクティベート
+ * @brief Activate task
  */
 Std_ReturnType Os_ActivateTask(TaskType taskId) {
     for (int i = 0; i < taskCount; i++) {
@@ -76,14 +76,14 @@ Std_ReturnType Os_ActivateTask(TaskType taskId) {
 }
 
 /**
- * @brief システムティックカウント取得
+ * @brief Get system tick count
  */
 uint32_t Os_GetTickCount(void) {
     return systemTick;
 }
 
 /**
- * @brief スリープ
+ * @brief Sleep
  */
 void Os_Sleep(uint32_t ms) {
 #ifdef _WIN32
@@ -94,16 +94,16 @@ void Os_Sleep(uint32_t ms) {
 }
 
 /**
- * @brief タスクスケジューラ
+ * @brief Task scheduler
  */
 void Os_Schedule(void) {
     uint32_t currentTick = systemTick;
     
     for (int i = 0; i < taskCount; i++) {
         if (taskTable[i].state == TASK_STATE_READY) {
-            /* 周期チェック */
+            /* Check period */
             if ((currentTick - taskTable[i].lastExecution) >= taskTable[i].period_ms) {
-                /* タスク実行 */
+                /* Execute task */
                 taskTable[i].state = TASK_STATE_RUNNING;
                 taskTable[i].taskFunc();
                 taskTable[i].lastExecution = currentTick;
@@ -114,23 +114,23 @@ void Os_Schedule(void) {
 }
 
 /**
- * @brief OS開始
+ * @brief Start OS
  */
 void Os_Start(void) {
     printf("[OS] Starting scheduler...\n");
     osRunning = true;
     
-    const uint32_t TICK_INTERVAL_MS = 1; /* 1msティック */
+    const uint32_t TICK_INTERVAL_MS = 1; /* 1ms tick */
     
     while (osRunning) {
-        /* スケジューラ実行 */
+        /* Execute scheduler */
         Os_Schedule();
         
-        /* ティック更新 */
+        /* Update tick */
         Os_Sleep(TICK_INTERVAL_MS);
         systemTick += TICK_INTERVAL_MS;
         
-        /* 10秒でシミュレーション終了 */
+        /* End simulation after 10 seconds */
         if (systemTick >= 10000) {
             osRunning = false;
         }
@@ -138,5 +138,3 @@ void Os_Start(void) {
     
     printf("[OS] Scheduler stopped\n");
 }
-
-#endif /* OS_C */

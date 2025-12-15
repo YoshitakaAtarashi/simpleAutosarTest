@@ -2,7 +2,7 @@
  * @file EcuM.h
  * @brief AUTOSAR ECU State Manager
  * 
- * ECUの状態管理とライフサイクル制御
+ * ECU state management and lifecycle control
  */
 
 #ifndef ECUM_H
@@ -10,7 +10,7 @@
 
 #include "Std_Types.h"
 
-/* ECU状態定義 */
+/* ECU state definitions */
 typedef enum {
     ECUM_STATE_STARTUP,
     ECUM_STATE_RUN,

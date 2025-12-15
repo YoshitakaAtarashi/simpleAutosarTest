@@ -2,7 +2,7 @@
  * @file Std_Types.h
  * @brief AUTOSAR Standard Types Definition
  * 
- * AUTOSAR標準のデータ型定義
+ * Standard data type definitions for AUTOSAR
  */
 
 #ifndef STD_TYPES_H
