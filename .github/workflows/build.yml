@@ -1,0 +1,87 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+    
+    - name: Configure CMake
+      run: cmake -B build
+    
+    - name: Build
+      run: cmake --build build --config Release
+    
+    - name: Test Run (Windows)
+      run: |
+        # Run for 2 seconds then terminate
+        $process = Start-Process -FilePath ".\build\Release\AutosarSim.exe" -PassThru -NoNewWindow
+        Start-Sleep -Seconds 2
+        Stop-Process -Id $process.Id -Force
+      shell: powershell
+      continue-on-error: true
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install Dependencies
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+    
+    - name: Configure CMake
+      run: cmake -B build
+    
+    - name: Build
+      run: cmake --build build
+    
+    - name: Test Run (Linux)
+      run: |
+        timeout 2s ./build/AutosarSim || true
+      continue-on-error: true
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+    
+    - name: Configure CMake
+      run: cmake -B build
+    
+    - name: Build
+      run: cmake --build build
+    
+    - name: Test Run (macOS)
+      run: |
+        gtimeout 2s ./build/AutosarSim || true
+      continue-on-error: true
+
+  test-python-gui:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Syntax Check
+      run: python -m py_compile simulator_gui.py
