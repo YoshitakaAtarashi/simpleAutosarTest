@@ -19,7 +19,9 @@ This environment provides a hands-on way to understand AUTOSAR standard structur
 - ✅ **Inter-component communication** via RTE
 - ✅ **Interactive GUI simulator** with real-time visualization
 - ✅ **Fully documented** code with learning guides
-- ✅ **Cross-platform** (Windows, Linux, macOS) 🏗️ AUTOSAR Architecture
+- ✅ **Cross-platform** (Windows, Linux, macOS)
+
+## 🏗️ AUTOSAR Architecture
 
 ```
 ┌─────────────────────────────────────┐
@@ -41,12 +43,11 @@ This environment provides a hands-on way to understand AUTOSAR standard structur
 └─────────────────────────────────────┘
             ↕
 ┌─────────────────────────────────────┐
-│   MCAL (Simulated)          API)
-┌─────────────────────────────────────┐
-│   RTE (Runtime Environment)          │  実行時環境
+│   MCAL (Simulated)                  │
 └─────────────────────────────────────┘
-            ↕
-┌──📁 Project Structure
+```
+
+## 📁 Project Structure
 
 ```
 AutosarTest/
